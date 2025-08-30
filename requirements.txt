@@ -1,0 +1,9 @@
+flask
+reportlab
+python-dotenv
+pillow
+flask-limiter
+flask-session
+google-generativeai
+Flask-Babel
+PyPDF2

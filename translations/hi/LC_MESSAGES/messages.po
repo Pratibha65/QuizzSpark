@@ -1,0 +1,260 @@
+# Hindi translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-08-27 20:09+0530\n"
+"PO-Revision-Date: 2025-08-27 10:37+0530\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: hi\n"
+"Language-Team: hi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: templates/index.html:82
+msgid "The shortest path from curious to genius"
+msgstr "जिज्ञासु से प्रतिभाशाली बनने का सबसे छोटा रास्ता"
+
+#: templates/index.html:83
+msgid "It all starts with a single word. What are you curious about?"
+msgstr "यह सब एक शब्द से शुरू होता है। आप किस बारे में उत्सुक हैं?"
+
+#: templates/index.html:88
+msgid "Enter a topic..."
+msgstr "कोई विषय दर्ज करें..."
+
+#: templates/index.html:90
+msgid "e.g., The Roman Empire, Quantum Physics, Indian History..."
+msgstr "जैसे, रोमन साम्राज्य, क्वांटम भौतिकी, भारतीय इतिहास..."
+
+#: templates/index.html:93
+msgid "Science"
+msgstr "विज्ञान"
+
+#: templates/index.html:94
+msgid "History"
+msgstr "इतिहास"
+
+#: templates/index.html:95
+msgid "🇮🇳 Indian Premier League"
+msgstr "🇮🇳 इंडियन प्रीमियर लीग"
+
+#: templates/index.html:96
+msgid "Surprise Me! ✨"
+msgstr "मुझे चौंका दो! ✨"
+
+#: templates/index.html:100
+msgid "Difficulty"
+msgstr "कठिनाई का स्तर"
+
+#: templates/index.html:102 templates/index.html:157
+msgid "Easy"
+msgstr "आसान"
+
+#: templates/index.html:103 templates/index.html:158
+msgid "Medium"
+msgstr "मध्यम"
+
+#: templates/index.html:104 templates/index.html:159
+msgid "Hard"
+msgstr "कठिन"
+
+#: templates/index.html:108
+msgid "Questions"
+msgstr "प्रश्न"
+
+#: templates/index.html:118
+msgid "Why Choose Us?"
+msgstr "हमें क्यों चुनें?"
+
+#: templates/index.html:121
+msgid "🧠 Limitless Topics"
+msgstr "🧠 असीमित विषय"
+
+#: templates/index.html:122
+msgid ""
+"Never take the same quiz twice. <strong>Create a study quiz from "
+"notes</strong> on astrophysics or <strong>make a trivia quiz for "
+"fun</strong> about 18th-century art. Our engine helps you <strong>create "
+"your own quiz</strong> on any topic imaginable."
+msgstr "एक ही क्विज़ को दोबारा न दें। <strog>नोट्स से एक अध्ययन क्विज़ बनाएँ</strong> खगोल भौतिकी पर या <strong>मज़े के लिए एक सामान्य ज्ञान क्विज़ बनाएँ</strong> 18वीं सदी की कला के बारे में। हमारा इंजन आपको <strong>अपनी क्विज़ बनाने में मदद करता है</strong> किसी भी कल्पनीय विषय पर।"
+
+#: templates/index.html:125
+msgid "🧗 Your Perfect Challenge"
+msgstr "🧗 आपकी आदर्श चुनौती"
+
+#: templates/index.html:126
+msgid ""
+"Just starting out or ready for the final boss? Choose your difficulty and"
+" test your knowledge at the right level for you."
+msgstr ""
+"क्या आप अभी शुरुआत कर रहे हैं या अंतिम चुनौती के लिए तैयार हैं? अपनी "
+"कठिनाई चुनें और अपने ज्ञान को अपने लिए सही स्तर पर परखें।"
+
+#: templates/index.html:129
+msgid "📤 Share Results"
+msgstr "📤 परिणाम साझा करें"
+
+#: templates/index.html:130
+msgid ""
+"Aced that tough quiz? Share your score card with a single click and "
+"challenge your friends to beat you."
+msgstr ""
+"क्या आपने उस कठिन क्विज़ में सफलता प्राप्त की? एक क्लिक से अपना स्कोर "
+"कार्ड साझा करें और अपने दोस्तों को आपको हराने की चुनौती दें।"
+
+#: templates/index.html:133
+msgid "🚀 Instant Access, Completely Free"
+msgstr "🚀 तुरंत पहुँच, पूरी तरह मुफ़्त"
+
+#: templates/index.html:134
+msgid ""
+"Jump straight into creating. No accounts, no sign-ups, no credit cards "
+"required. Your next quiz is just one click away."
+msgstr "सीधे क्विज़ बनाना शुरू करें। कोई खाता नहीं, कोई साइन-अप नहीं, कोई क्रेडिट कार्ड की आवश्यकता नहीं। आपकी अगली क्विज़ बस एक क्लिक दूर है।"
+
+#: templates/index.html:143
+msgid "Ready for Another Challenge?"
+msgstr "एक और चुनौती के लिए तैयार हैं?"
+
+#: templates/index.html:144
+msgid "The learning never stops. Pick your next topic below."
+msgstr "सीखना कभी बंद नहीं होता। नीचे अपना अगला विषय चुनें।"
+
+#: templates/index.html:148
+msgid "Topic"
+msgstr "विषय"
+
+#: templates/index.html:154
+msgid "Difficulty level"
+msgstr "कठिनाई का स्तर"
+
+#: templates/index.html:164
+msgid "Number of Questions"
+msgstr "प्रश्नों की संख्या"
+
+#: templates/index.html:169
+msgid "Spark the Quiz!?"
+msgstr "क्विज़ शुरू करें!?"
+
+#: templates/index.html:176
+msgid "Building your challenge..."
+msgstr "अपनी चुनौती तैयार करें..."
+
+#: templates/index.html:190
+msgid "Your Instant AI Quiz Generator"
+msgstr "आपका इंस्टेंट AI क्विज़ जेनरेटर"
+
+#: templates/index.html:191
+msgid ""
+"QuizzSpark is a free online test creator designed for students, teachers, "
+"and curious minds in India and across the world. We believe that creating"
+" a custom quiz should be simple and instant. Here’s how our quiz maker "
+"brings any topic to life in under a minute:"
+msgstr "क्विज़स्पार्क एक मुफ़्त ऑनलाइन टेस्ट क्रिएटर है जिसे भारत और दुनिया भर के छात्रों, शिक्षकों और जिज्ञासु लोगों के लिए डिज़ाइन किया गया है। हमारा मानना ​​है कि एक कस्टम क्विज़ बनाना आसान और तुरंत होना चाहिए। हमारा क्विज़ मेकर किसी भी विषय को एक मिनट से भी कम समय में जीवंत बना देता है:"
+
+#: templates/index.html:195
+msgid "1. Enter Any Topic"
+msgstr "कोई विषय दर्ज करें..."
+
+#: templates/index.html:196
+msgid ""
+"Simply type any subject into the box – from the IPL to quantum physics. "
+"Our AI is ready to generate a quiz on any topic you can imagine."
+msgstr "बस बॉक्स में कोई भी विषय टाइप करें - आईपीएल से लेकर क्वांटम भौतिकी तक। हमारा AI आपके द्वारा कल्पना किए जा सकने वाले किसी भी विषय पर क्विज़ बनाने के लिए तैयार है।"
+
+#: templates/index.html:199
+msgid "2. Customize Your Test"
+msgstr "2. अपनी परीक्षा को अनुकूलित करें"
+
+#: templates/index.html:200
+msgid ""
+"Choose your desired difficulty and the number of multiple-choice "
+"questions. It’s the perfect custom quiz maker for any study session or "
+"classroom activity."
+msgstr "अपनी इच्छित कठिनाई और बहुविकल्पीय प्रश्नों की संख्या चुनें। यह किसी भी अध्ययन सत्र या कक्षा गतिविधि के लिए एकदम सही कस्टम क्विज़ निर्माता है।"
+
+#: templates/index.html:203
+msgid "3. Spark Your Quiz!"
+msgstr "क्विज़ शुरू करें!?"
+
+#: templates/index.html:204
+msgid ""
+"Click the button to instantly receive your unique quiz. Challenge "
+"yourself, share with friends, or use it to prepare for an exam. It’s that"
+" easy!"
+msgstr "अपनी अनूठी क्विज़ तुरंत प्राप्त करने के लिए बटन पर क्लिक करें। खुद को चुनौती दें, दोस्तों के साथ साझा करें, या परीक्षा की तैयारी के लिए इसका उपयोग करें। यह इतना आसान है!"
+
+#: templates/index.html:210
+msgid "Frequently Asked Questions"
+msgstr "अक्सर पूछे जाने वाले प्रश्न"
+
+#: templates/index.html:213
+msgid "Is this AI quiz generator truly free to use?"
+msgstr "क्या यह AI क्विज़ जनरेटर वास्तव में उपयोग करने के लिए मुफ़्त है?"
+
+#: templates/index.html:214
+#, python-format
+msgid ""
+"Yes, 100%%! QuizzSpark is a completely free quiz maker. There are no "
+"hidden costs, no premium versions, and no limits on how many quizzes you "
+"can create."
+msgstr "हाँ, 100%%! QuizzSpark एक पूरी तरह से मुफ़्त क्विज़ निर्माता है। इसमें कोई छिपी हुई लागत नहीं है, कोई प्रीमियम संस्करण नहीं है, और आप कितने भी क्विज़ बना सकते हैं, इसकी कोई सीमा नहीं है।"
+
+#: templates/index.html:218
+msgid "Do I need to create an account or sign up?"
+msgstr "क्या मुझे खाता बनाने या साइन अप करने की आवश्यकता है?"
+
+#: templates/index.html:219
+msgid ""
+"No. We believe in instant access. You can start creating your quiz the "
+"moment you land on our page, with no sign-up required."
+msgstr "नहीं। हम तत्काल पहुँच में विश्वास करते हैं। आप हमारे पेज पर आते ही अपनी क्विज़ बनाना शुरू कर सकते हैं, बिना साइन-अप के।"
+
+#: templates/index.html:223
+msgid "What topics can I create a quiz on?"
+msgstr "मैं किन विषयों पर क्विज़ बना सकता हूँ?"
+
+#: templates/index.html:224
+msgid ""
+"Any topic you can imagine! Our AI can generate a custom quiz on anything "
+"from Indian history and physics to Taylor Swift and the latest IPL "
+"season."
+msgstr "कोई भी विषय जिसकी आप कल्पना कर सकते हैं! हमारा AI भारतीय इतिहास और भौतिकी से लेकर टेलर स्विफ्ट और नवीनतम आईपीएल सीज़न तक, किसी भी विषय पर एक कस्टम क्विज़ तैयार कर सकता है।"
+
+#: templates/index.html:228
+msgid "What type of questions does it generate?"
+msgstr "यह किस प्रकार के प्रश्न तैयार करता है?"
+
+#: templates/index.html:229
+msgid ""
+"QuizzSpark is a multiple-choice quiz maker. It automatically generates "
+"questions with four distinct options for each one."
+msgstr "QuizzSpark एक बहुविकल्पीय क्विज़ निर्माता है। यह प्रत्येक प्रश्न के लिए चार अलग-अलग विकल्पों के साथ स्वचालित रूप से प्रश्न तैयार करता है।"
+
+#: templates/index.html:233
+msgid "Who is this tool for?"
+msgstr "यह टूल किसके लिए है?"
+
+#: templates/index.html:234
+msgid ""
+"Our free online test creator is perfect for teachers making classroom "
+"assignments, students creating study guides, or anyone who wants to make "
+"a trivia quiz for fun."
+msgstr "हमारा मुफ़्त ऑनलाइन टेस्ट क्रिएटर कक्षा असाइनमेंट बनाने वाले शिक्षकों, अध्ययन मार्गदर्शिकाएँ बनाने वाले छात्रों, या मनोरंजन के लिए सामान्य ज्ञान क्विज़ बनाने वाले किसी भी व्यक्ति के लिए एकदम सही है।"
+
+#: templates/index.html:239
+msgid "QuizzSpark – Where curiosity meets its match."
+msgstr "क्विज़स्पार्क - जहाँ जिज्ञासा और उसका मुकाबला होता है।"
+
+#: templates/index.html:240
+msgid "© 2025 QuizzSpark. All rights reserved. Happy quizzing!"
+msgstr "© 2025 क्विज़स्पार्क। सर्वाधिकार सुरक्षित। क्विज़ खेलने का आनंद लें!"
+

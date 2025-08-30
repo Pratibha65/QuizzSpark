@@ -1,0 +1,255 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-08-27 20:09+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: templates/index.html:82
+msgid "The shortest path from curious to genius"
+msgstr ""
+
+#: templates/index.html:83
+msgid "It all starts with a single word. What are you curious about?"
+msgstr ""
+
+#: templates/index.html:88
+msgid "Enter a topic..."
+msgstr ""
+
+#: templates/index.html:90
+msgid "e.g., The Roman Empire, Quantum Physics, Indian History..."
+msgstr ""
+
+#: templates/index.html:93
+msgid "Science"
+msgstr ""
+
+#: templates/index.html:94
+msgid "History"
+msgstr ""
+
+#: templates/index.html:95
+msgid "🇮🇳 Indian Premier League"
+msgstr ""
+
+#: templates/index.html:96
+msgid "Surprise Me! ✨"
+msgstr ""
+
+#: templates/index.html:100
+msgid "Difficulty"
+msgstr ""
+
+#: templates/index.html:102 templates/index.html:157
+msgid "Easy"
+msgstr ""
+
+#: templates/index.html:103 templates/index.html:158
+msgid "Medium"
+msgstr ""
+
+#: templates/index.html:104 templates/index.html:159
+msgid "Hard"
+msgstr ""
+
+#: templates/index.html:108
+msgid "Questions"
+msgstr ""
+
+#: templates/index.html:118
+msgid "Why Choose Us?"
+msgstr ""
+
+#: templates/index.html:121
+msgid "🧠 Limitless Topics"
+msgstr ""
+
+#: templates/index.html:122
+msgid ""
+"Never take the same quiz twice. <strong>Create a study quiz from "
+"notes</strong> on astrophysics or <strong>make a trivia quiz for "
+"fun</strong> about 18th-century art. Our engine helps you <strong>create "
+"your own quiz</strong> on any topic imaginable."
+msgstr ""
+
+#: templates/index.html:125
+msgid "🧗 Your Perfect Challenge"
+msgstr ""
+
+#: templates/index.html:126
+msgid ""
+"Just starting out or ready for the final boss? Choose your difficulty and"
+" test your knowledge at the right level for you."
+msgstr ""
+
+#: templates/index.html:129
+msgid "📤 Share Results"
+msgstr ""
+
+#: templates/index.html:130
+msgid ""
+"Aced that tough quiz? Share your score card with a single click and "
+"challenge your friends to beat you."
+msgstr ""
+
+#: templates/index.html:133
+msgid "🚀 Instant Access, Completely Free"
+msgstr ""
+
+#: templates/index.html:134
+msgid ""
+"Jump straight into creating. No accounts, no sign-ups, no credit cards "
+"required. Your next quiz is just one click away."
+msgstr ""
+
+#: templates/index.html:143
+msgid "Ready for Another Challenge?"
+msgstr ""
+
+#: templates/index.html:144
+msgid "The learning never stops. Pick your next topic below."
+msgstr ""
+
+#: templates/index.html:148
+msgid "Topic"
+msgstr ""
+
+#: templates/index.html:154
+msgid "Difficulty level"
+msgstr ""
+
+#: templates/index.html:164
+msgid "Number of Questions"
+msgstr ""
+
+#: templates/index.html:169
+msgid "Spark the Quiz!?"
+msgstr ""
+
+#: templates/index.html:176
+msgid "Building your challenge..."
+msgstr ""
+
+#: templates/index.html:190
+msgid "Your Instant AI Quiz Generator"
+msgstr ""
+
+#: templates/index.html:191
+msgid ""
+"QuizzSpark is a free online test creator designed for students, teachers, "
+"and curious minds in India and across the world. We believe that creating"
+" a custom quiz should be simple and instant. Here’s how our quiz maker "
+"brings any topic to life in under a minute:"
+msgstr ""
+
+#: templates/index.html:195
+msgid "1. Enter Any Topic"
+msgstr ""
+
+#: templates/index.html:196
+msgid ""
+"Simply type any subject into the box – from the IPL to quantum physics. "
+"Our AI is ready to generate a quiz on any topic you can imagine."
+msgstr ""
+
+#: templates/index.html:199
+msgid "2. Customize Your Test"
+msgstr ""
+
+#: templates/index.html:200
+msgid ""
+"Choose your desired difficulty and the number of multiple-choice "
+"questions. It’s the perfect custom quiz maker for any study session or "
+"classroom activity."
+msgstr ""
+
+#: templates/index.html:203
+msgid "3. Spark Your Quiz!"
+msgstr ""
+
+#: templates/index.html:204
+msgid ""
+"Click the button to instantly receive your unique quiz. Challenge "
+"yourself, share with friends, or use it to prepare for an exam. It’s that"
+" easy!"
+msgstr ""
+
+#: templates/index.html:210
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: templates/index.html:213
+msgid "Is this AI quiz generator truly free to use?"
+msgstr ""
+
+#: templates/index.html:214
+#, python-format
+msgid ""
+"Yes, 100%%! QuizzSpark is a completely free quiz maker. There are no "
+"hidden costs, no premium versions, and no limits on how many quizzes you "
+"can create."
+msgstr ""
+
+#: templates/index.html:218
+msgid "Do I need to create an account or sign up?"
+msgstr ""
+
+#: templates/index.html:219
+msgid ""
+"No. We believe in instant access. You can start creating your quiz the "
+"moment you land on our page, with no sign-up required."
+msgstr ""
+
+#: templates/index.html:223
+msgid "What topics can I create a quiz on?"
+msgstr ""
+
+#: templates/index.html:224
+msgid ""
+"Any topic you can imagine! Our AI can generate a custom quiz on anything "
+"from Indian history and physics to Taylor Swift and the latest IPL "
+"season."
+msgstr ""
+
+#: templates/index.html:228
+msgid "What type of questions does it generate?"
+msgstr ""
+
+#: templates/index.html:229
+msgid ""
+"QuizzSpark is a multiple-choice quiz maker. It automatically generates "
+"questions with four distinct options for each one."
+msgstr ""
+
+#: templates/index.html:233
+msgid "Who is this tool for?"
+msgstr ""
+
+#: templates/index.html:234
+msgid ""
+"Our free online test creator is perfect for teachers making classroom "
+"assignments, students creating study guides, or anyone who wants to make "
+"a trivia quiz for fun."
+msgstr ""
+
+#: templates/index.html:239
+msgid "QuizzSpark – Where curiosity meets its match."
+msgstr ""
+
+#: templates/index.html:240
+msgid "© 2025 QuizzSpark. All rights reserved. Happy quizzing!"
+msgstr ""
+

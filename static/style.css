@@ -1,0 +1,557 @@
+/* =========================== 
+   QuizzSpark Final Production CSS
+   =========================== */
+
+/* --- Design Tokens --- */
+:root {
+    --bg-color: #121212;
+    --surface-color: #1e1e1e;
+    --primary-color: #03dac6;
+    --primary-color-dark: #018786;
+    --text-color: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --correct-color: #4caf50;
+    --incorrect-color: #f44336;
+    --radius: 12px;
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --container-max: 800px;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+    --t: 220ms;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100%;
+    margin: 0;
+}
+
+/* --- Site Brand / Logo --- */
+.site-brand {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.site-brand a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site-brand a:hover {
+    color: white;
+}
+
+/* --- Global Background Canvas --- */
+#hero-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* --- Layout --- */
+.content-wrapper {
+    padding: max(env(safe-area-inset-top), 3rem) clamp(0.75rem, 3vw, 2rem) max(env(safe-area-inset-bottom), 3rem);
+}
+
+section {
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto clamp(3rem, 8vw, 5rem);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.container {
+    width: 100%;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--surface-color);
+}
+
+/* --- Language Selector --- */
+.language-selector {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 1000;
+}
+.language-selector select {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+  background-color: #111;
+  color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.language-selector select:hover {
+  border-color: #00ffdd;
+  box-shadow: 0 0 8px color-mix(in oklab, var(--primary-color) 60%, transparent);
+}
+
+/* --- Typography --- */
+h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
+h2 {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--primary-color);
+    margin: 0 0 2rem;
+    text-align: center;
+}
+p {
+    color: var(--text-secondary);
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+}
+
+/* --- Hero Section --- */
+.hero {
+    text-align: center;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+.hero p {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin-bottom: 2rem;
+    max-width: 60ch;
+}
+
+/* --- Unified Hero Form --- */
+.unified-form-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 650px;
+    border-radius: var(--radius);
+    background-color: var(--surface-color);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), var(--shadow-lg);
+    border: 1px solid transparent;
+    transition: all var(--t) var(--ease);
+    overflow: hidden;
+}
+.unified-form-container:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary-color) 20%, transparent), var(--shadow-lg);
+}
+.input-row { display: flex; }
+#hero-topic-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: clamp(0.9rem, 3vw, 1.2rem) clamp(1rem, 4vw, 1.5rem);
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    color: var(--text-color);
+}
+#hero-start-btn {
+    flex-shrink: 0;
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--t) var(--ease);
+}
+#hero-start-btn:hover { background-color: var(--primary-color-dark); }
+#hero-start-btn svg { transition: transform 150ms ease-in-out; }
+#hero-start-btn:hover svg { transform: translateX(3px); }
+.options-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 1rem 1rem 1rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 400ms var(--ease), opacity 400ms var(--ease), padding 400ms var(--ease);
+}
+.unified-form-container.expanded .options-row {
+    max-height: 200px;
+    opacity: 1;
+    padding-top: 1rem;
+}
+.option-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.option-item label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    padding-left: 0.5rem;
+}
+.option-item select, .option-item input {
+    width: 100%;
+    background: #2b2b2b;
+    border: 1px solid #4a4a4a;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1rem;
+}
+.final-generate-btn {
+    align-self: end;
+    padding: 0.6rem 1.5rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: #000;
+    border-radius: 8px;
+    transition: background-color var(--t) var(--ease);
+}
+.final-generate-btn:hover { background-color: var(--primary-color-dark); }
+
+/* --- Topic Suggestions --- */
+.topic-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    max-width: 100%;
+}
+.suggestion-chip {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 150ms var(--ease);
+}
+.suggestion-chip:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--text-color);
+    transform: translateY(-2px);
+}
+
+/* --- Features Section --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+}
+.feature-card {
+    background: var(--surface-color);
+    padding: clamp(1.2rem, 4vw, 2rem);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    text-align: left;
+    transition: transform var(--t) var(--ease);
+}
+.feature-card:hover { transform: translateY(-5px); }
+.feature-card h3 {
+    margin-top: 0;
+    border: none;
+    padding-bottom: 0;
+}
+
+/* --- Main Quiz Form (hidden) --- */
+#setup-container header { margin-bottom: 2rem; text-align: center; }
+#quiz-form { display: flex; flex-direction: column; gap: 1.5rem; text-align: left; }
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+#quiz-form label { font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); padding-left: 0.5rem; }
+#quiz-form input, #quiz-form select {
+    background: #2b2b2b;
+    border: 1px solid #4a4a4a;
+    color: var(--text-color);
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    width: 100%;
+}
+#quiz-form .select-wrapper { position: relative; }
+#quiz-form .select-wrapper::after { content: '▼'; font-size: .8rem; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
+#quiz-form select { appearance: none; -webkit-appearance: none; }
+#generate-btn { width: 100%; margin-top: 1rem; padding: 0.9rem; border-radius: 10px; }
+
+/* --- Glow Effect for Form Container --- */
+:root {
+    --glow-color: #03dac6; /* Your vibrant teal accent color */
+}
+
+/* Target the container of the second form */
+#quiz-section .container {
+    border: 1px solid rgba(3, 218, 198, 0.2); 
+    box-shadow: 0 0 0px rgba(3, 218, 198, 0.0);
+    transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+/* Apply glow when the mouse hovers over the container */
+#quiz-section .container:hover {
+    border-color: var(--glow-color); 
+    box-shadow: 0 0 20px var(--glow-color), 0 0 35px rgba(3, 218, 198, 0.3);
+}
+
+/* Keep the subtle inner glow for the specific input being edited */
+#quiz-section .form-group input:focus,
+#quiz-section .form-group select:focus {
+    outline: none;
+    border-color: var(--glow-color); 
+    box-shadow: 0 0 8px rgba(3, 218, 198, 0.5); 
+}
+/* --- Quiz View --- */
+.question-card {
+    background: var(--surface-color);
+    padding: clamp(1.2rem, 4vw, 2rem);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    text-align: left;
+    border: 2px solid transparent;
+}
+.question-text {
+    font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+@media (min-width: 600px) {
+    .options-grid { grid-template-columns: 1fr 1fr; }
+}
+.option-label {
+    background: #333;
+    border: 2px solid #555;
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
+    display: flex;
+    align-items: center;
+}
+.option-label:hover {
+    background: #3b3b3b;
+    border-color: var(--primary-color);
+}
+.option-label input[type="radio"] { display: none; }
+.option-label .option-text { line-height: 1.4; }
+.option-label input[type="radio"]:checked + .option-text {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.option-label input[type="radio"]:checked + .option-text::before {
+    content: '✔';
+    margin-right: .75rem;
+    color: var(--primary-color);
+}
+#submit-btn {
+    margin-top: 2rem;
+    width: 100%;
+}
+.question-card.unanswered {
+    border-color: var(--incorrect-color);
+}
+
+/* --- Results View --- */
+.score-card {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid #444;
+    text-align: center;
+}
+.score-text {
+    margin-bottom: .5rem;
+    font-size: clamp(1rem, 2.8vw, 1.2rem);
+}
+.score-display {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+.quiz-info { font-size: 1rem; margin-bottom: .4rem; }
+.score-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.score-card-actions button {
+    background: #333;
+    color: var(--text-color);
+    border-radius: 10px;
+}
+.feedback-item {
+    text-align: left;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border-left: 4px solid;
+}
+.feedback-item.correct { background: color-mix(in oklab, var(--correct-color) 12%, transparent); border-left-color: var(--correct-color); }
+.feedback-item.incorrect { background: color-mix(in oklab, var(--incorrect-color) 12%, transparent); border-left-color: var(--incorrect-color); }
+#try-again-btn { margin-top: 2rem; width: 100%; }
+
+/* --- How It Works Section --- */
+.how-it-works {
+    text-align: center;
+}
+
+.how-it-works p {
+    max-width: 65ch; /* Optimal reading width */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.step-card {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--primary-color);
+}
+
+.step-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+/* --- FAQ Section --- */
+.faq-section {
+    max-width: var(--container-max);
+    margin: 3rem auto;
+}
+
+.faq-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.faq-item {
+    background-color: var(--surface-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.faq-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.faq-item p {
+    margin-bottom: 0;
+    line-height: 1.7;
+}
+
+/* --- Footer --- */
+.site-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 4rem;
+    border-top: 1px solid #2a2a2a;
+}
+
+/* --- Footer --- */
+.site-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 4rem;
+    border-top: 1px solid #2a2a2a;
+}
+
+/* --- Animation Keyframes --- */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+@keyframes shake { 
+    0%, 100% { transform: translateX(0); } 
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 
+    20%, 40%, 60%, 80% { transform: translateX(5px); } 
+}
+.shake { animation: shake 0.5s ease-in-out; }
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+}
+
+/* --- Loading Animation Focus --- */
+
+/* This defines the pulsing animation */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(3, 218, 198, 0.2), 0 0 5px rgba(3, 218, 198, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(3, 218, 198, 0.7), 0 0 30px rgba(3, 218, 198, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(3, 218, 198, 0.2), 0 0 5px rgba(3, 218, 198, 0.2);
+  }
+}
+
+/* Apply the animation and some better styling to the loading container */
+#loading-container {
+    text-align: center;
+    padding: 3rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--primary-color);
+    /* The animation runs for 2 seconds, infinitely */
+    animation: pulse-glow 2s infinite ease-in-out;
+}
