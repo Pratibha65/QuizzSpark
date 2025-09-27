@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, send_file
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from PyPDF2 import PdfReader, PdfWriter
@@ -77,6 +78,7 @@ def ask_gemini():
     difficulty = request.json.get('difficulty', 'medium')
     num_questions = int(request.json.get('num_questions', 10))
     language = session.get('language', 'en')  # default English
+    question_type = request.json.get('question_type', 'multiple-choice')
 
     batch_size = 10  # how many questions to fetch per call
     all_questions = []
@@ -86,20 +88,39 @@ def ask_gemini():
         remaining = num_questions - len(all_questions)
         count = min(batch_size, remaining)
 
-        user_query = f"""
-        Generate exactly {count} multiple-choice questions on the topic "{topic}".
-        Difficulty: {difficulty}. The quiz must be strictly in language {language}.
-        Each question must have 4 options labeled A-D, and the correct answer in a separate field.
+        if question_type == 'true-false':
+            user_query = f"""
+            Generate exactly {count} true/false questions on the topic "{topic}".
+            Difficulty: {difficulty}. The quiz must be strictly in language {language}.
+            Each question must have exactly two options labeled A and B, "A. True" and "B. False". The correct answer must be in a separate field. Also, provide an explanation for the correct answer.
 
-        Respond strictly in this JSON format:
-        [
-        {{
-            "question": "...",
-            "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
-            "answer": "B"
-        }}
-        ]
-        """
+            Respond strictly in this JSON format:
+            [
+            {{
+                "question": "...",
+                "options": ["A. True", "B. False"],
+                "answer": "A",
+                "explanation":"This is the explanation for the correct answer..."
+            }}
+            ]
+            """
+        else: 
+            user_query = f"""
+            Generate exactly {count} multiple-choice questions on the topic "{topic}".
+            Difficulty: {difficulty}. The quiz must be strictly in language {language}.
+            Each question must have 4 options labeled A-D, and the correct answer in a separate field.
+            Also, provide an explanation for the correct answer.
+
+            Respond strictly in this JSON format:
+            [
+            {{
+                "question": "...",
+                "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+                "answer": "B"
+                "explanation":"This is the explanation for the correct answer..."
+            }}
+            ]
+            """
 
         response = model.generate_content(user_query)
         raw_text = response.text.strip()
@@ -115,7 +136,7 @@ def ask_gemini():
         for q in quiz_batch:
             opts = [opt.strip() for opt in q["options"]]
             ans = q["answer"].strip().upper()[:1]  # A/B/C/D
-            all_questions.append({"question": q["question"], "options": opts})
+            all_questions.append({"question": q["question"], "options": opts, "explanation": q.get("explanation", "No explanation provided.")})
             all_answers.append(ans)
 
     # keep only requested amount (in case model overshot)
@@ -128,6 +149,7 @@ def ask_gemini():
     session["topic"] = topic
     session["difficulty"] = difficulty
     session["num_questions"] = num_questions
+    
 
     return jsonify({"quiz": all_questions})
 
@@ -139,19 +161,22 @@ def submit_quiz():
         quiz = session.get("quiz", [])
         topic = session.get("topic", "Unknown")
         difficulty = session.get("difficulty", "Unknown")
+        explanations = [q.get('explanation') for q in quiz]
 
         score = 0
         feedback = []
         for i, user_ans in enumerate(user_answers):
             user_ans = user_ans.strip().upper()[:1]
             correct = correct_answers[i] if i < len(correct_answers) else ""
+            explanation = explanations[i] if i < len(explanations) else ""
             is_correct = user_ans == correct
             feedback.append({
                 "question_number": i + 1,
                 "question": quiz[i]["question"] if i < len(quiz) else "",
                 "user_answer": user_ans,
                 "correct_answer": correct,
-                "is_correct": is_correct
+                "is_correct": is_correct,
+                "explanation": explanation 
             })
             if is_correct:
                 score += 1
@@ -165,7 +190,8 @@ def submit_quiz():
             "total": len(correct_answers),
             "feedback": feedback,
             "topic": topic,
-            "difficulty": difficulty
+            "difficulty": difficulty,
+            "quiz": quiz
         })
     except Exception as e:
         print("Error in /submit-quiz:", e)
@@ -205,15 +231,23 @@ def download_pdf():
         quiz = session.get("quiz", [])
         # ... (get all your other session data as before)
         user_answers = session.get("user_answers", [])
+        correct_answers = session.get('answers', [])
         score = session.get("score", 0)
         topic = session.get("topic", "Unknown")
         difficulty = session.get("difficulty", "Unknown")
 
         content_buffer = io.BytesIO()
         doc = SimpleDocTemplate(content_buffer, pagesize=A4)
+
         styles = getSampleStyleSheet()
+        green_style = ParagraphStyle(
+            name='GreenNormal',
+            parent=styles['Normal'],
+            textColor=colors.green
+        )
+
         elements = []
-        # ... (your existing code to build the 'elements' list with paragraphs is perfect)
+
         # Title
         elements.append(Paragraph(f"<b>Quiz Results</b>", styles['Title']))
         elements.append(Spacer(1, 12))
@@ -221,13 +255,36 @@ def download_pdf():
         elements.append(Paragraph(f"Difficulty: {difficulty}", styles['Normal']))
         elements.append(Paragraph(f"Score: {score}/{len(quiz)}", styles['Normal']))
         elements.append(Spacer(1, 24))
+
         # Loop for questions
         for i, q in enumerate(quiz):
             elements.append(Paragraph(f"Q{i+1}. {q['question']}", styles['Heading3']))
+
+            # Find the full option text for the correct answer
+            correct_ans_letter = correct_answers[i] if i < len(correct_answers) else ""
+            correct_ans_text = next((opt for opt in q.get("options", []) if opt.startswith(correct_ans_letter)), "Not found")
+
             for opt in q.get("options", []):
-                elements.append(Paragraph(opt, styles['Normal']))
-            user_ans = user_answers[i] if i < len(user_answers) else "Not answered"
-            elements.append(Paragraph(f"Your Answer: {user_ans}", styles['Normal']))
+                if opt == correct_ans_text:
+                    elements.append(Paragraph(opt, green_style))
+                else:
+                    elements.append(Paragraph(opt, styles['Normal']))
+
+            user_ans_text = "Not answered"
+            if i < len(user_answers) and user_answers[i]:
+                # Find the full option text for the user's answer
+                user_ans_text = next((opt for opt in q.get("options", []) if opt.startswith(user_answers[i])), "Not answered")
+
+            
+
+            explanation = q.get("explanation", "No explanation provided.")
+
+            elements.append(Spacer(1, 6))
+            elements.append(Paragraph(f"Your Answer: {user_ans_text}", styles['Normal']))
+            elements.append(Spacer(1, 6))
+            elements.append(Paragraph(f"Correct Answer: {correct_ans_text}", styles['Normal']))
+            elements.append(Spacer(1, 6))
+            elements.append(Paragraph(f"<b>Explanation:</b> {explanation}", styles['Normal']))
             elements.append(Spacer(1, 12))
             
         doc.build(elements)

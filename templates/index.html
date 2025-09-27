@@ -117,6 +117,13 @@
             </div>
             <div class="options-row">
                 <div class="option-item">
+                    <label for="hero-questionType">Type</label>
+                    <select id="hero-questionType">
+                        <option value="multiple-choice" selected>Multiple Choice</option>
+                        <option value="true-false">True/False</option>
+                    </select>
+                </div>
+                <div class="option-item">
                     <label for="hero-difficulty">{{ _('Difficulty')}}</label>
                     <select id="hero-difficulty">
                         <option value="easy">{{ _('Easy')}}</option>
@@ -170,6 +177,15 @@
     </div>
     
     <div class="form-row">
+        <div class="form-group">
+            <label for="questionType">Question Type</label>
+            <div class="select-wrapper">
+                <select id="questionType">
+                    <option value="multiple-choice" selected>Multiple Choice</option>
+                    <option value="true-false">True/False</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group">
             <label for="difficulty">{{ _('Difficulty level')}}</label>
             <div class="select-wrapper">
@@ -334,6 +350,9 @@
         const loadingContainer = document.getElementById('loading-container');
         const quizContainer = document.getElementById('quiz-container');
         const resultsContainer = document.getElementById('results-container');
+        // In index.html, inside the <script> tags
+        const heroQuestionTypeSelect = document.getElementById('hero-questionType');
+        const mainQuestionTypeSelect = document.getElementById('questionType');
 
         // =================================================================
         // Main & Hero Form Selectors
@@ -393,7 +412,7 @@
 
         
 
-        async function sendQuery(topic, difficulty, numQuestions) {
+        async function sendQuery(topic, difficulty, numQuestions, questionType) {
         if (!topic) {
             // Find which form is visible to shake it
             const visibleForm = document.getElementById('unified-form-container').offsetParent ? 
@@ -414,7 +433,7 @@
             const response = await fetch('/ask-gemini', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ topic, difficulty, num_questions: numQuestions })
+                body: JSON.stringify({ topic, difficulty, num_questions: numQuestions, question_type: questionType})
             });
 
             if (!response.ok) {
@@ -562,12 +581,27 @@
             feedbackHeader.textContent = t.reviewAnswers;
             resultsContainer.appendChild(feedbackHeader);
 
+            const quizData = result.quiz;
+
             result.feedback.forEach(fb => {
                 const el = document.createElement('div');
                 el.className = `feedback-item ${fb.is_correct ? 'correct' : 'incorrect'}`;
+
+                const originalQuestion = quizData[fb.question_number - 1];
+
+                const userOption = originalQuestion.options.find(opt => opt.startsWith(fb.user_answer));
+
+                const correctOption = originalQuestion.options.find(opt => opt.startsWith(fb.correct_answer));
+
+
                 el.innerHTML = `
-                    <p><strong>Q${fb.question_number}:</strong> ${t.yourAnswer}: ${fb.user_answer || t.notAnswered}</p>
-                    <p>${t.correctAnswer}: <strong>${fb.correct_answer}</strong></p>
+                    <h4>Question:</h4>
+                    <p>${fb.question}</p>
+                    <h4>Your Answer:</h4>
+                    <p>${userOption || t.notAnswered}</p>
+                    <h4>Correct Answer:</h4>
+                    <p>${correctOption}</p>
+                    ${fb.explanation ? `<h4>Explanation:</h4><p>${fb.explanation}</p>` : ''}
                 `;
                 resultsContainer.appendChild(el);
             });
@@ -661,7 +695,8 @@
             const topic = heroTopicInput.value.trim();
             const difficulty = heroDifficultySelect.value;
             const numQuestions = parseInt(heroNumQuestionsInput.value, 10);
-            sendQuery(topic, difficulty, numQuestions);
+            const questionType = heroQuestionTypeSelect.value;
+            sendQuery(topic, difficulty, numQuestions, questionType);
         });
 
         // Add this new listener for the second form's button
@@ -671,7 +706,8 @@
             const topic = mainTopicInput.value.trim();
             const difficulty = mainDifficultySelect.value;
             const numQuestions = parseInt(mainNumQuestionsInput.value, 10);
-            sendQuery(topic, difficulty, numQuestions);
+            const questionType = mainQuestionTypeSelect.value;
+            sendQuery(topic, difficulty, numQuestions, questionType);
         });
 
         const suggestionsContainer = document.querySelector('.topic-suggestions');
