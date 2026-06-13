@@ -1,3 +1,4 @@
 .env
 my_requirements.txt
 flask_session/
+.venv/

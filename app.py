@@ -1,3 +1,5 @@
+import time
+from google.api_core.exceptions import ResourceExhausted
 from flask import Flask, render_template, request, jsonify, session, send_file
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib import colors
@@ -11,11 +13,38 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_session import Session
 from flask_babel import Babel, _
+from flask_sqlalchemy import SQLAlchemy
+from flask import url_for
+import uuid
 import os
 import google.generativeai as genai
 import json
 import re
 import io
+
+# --- IMPORT FROM NEW FILE ---
+from models import db, Challenge
+
+
+#for hindi font
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+HINDI_FONT_NAME = 'DevanagariUnicode' 
+HINDI_FONT_FILE = 'NotoSansDevanagari-Regular.ttf' # *** USER MUST DOWNLOAD AND PLACE THIS 
+
+try:
+    # 1. Try a common Windows Hindi font path first
+    pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, HINDI_FONT_FILE))
+except Exception as e:
+    # 2. Fallback to a well-known font name (may still fail if not present)
+    print(f"Warning: Failed to load Hindi font at {HINDI_FONT_FILE}. Error: {e}")
+    try:
+        # Try a more generic widely available font that may include Devanagari
+        pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, 'arialuni.ttf')) # Arial Unicode MS
+    except:
+        # 3. Final fallback: Register 'Helvetica' but Hindi text will likely still fail (show squares)
+        pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, 'Helvetica'))
+        print("Final Fallback: Using Helvetica. Hindi characters may not render correctly.")
 
 load_dotenv()
 
@@ -39,6 +68,17 @@ limiter = Limiter(
     default_limits=["100 per hour"]  # fallback if no custom limit is set
 )
 
+# --- DATABASE CONFIGURATION ---
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quizzes.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+
+# Bind the database to this specific app instance
+db.init_app(app)
+
+# Create the tables if they don't exist yet
+with app.app_context():
+    db.create_all()
+
 # CORS(app)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev_secret")  # fallback for local dev
 
@@ -50,7 +90,7 @@ Session(app)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") 
 genai.configure(api_key=GEMINI_API_KEY)
 
-model = genai.GenerativeModel('gemini-2.0-flash')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 LETTER_TO_INDEX = {"A": 0, "B": 1, "C": 2, "D": 3}
 INDEX_TO_LETTER = "ABCD"
@@ -72,7 +112,7 @@ def set_language():
 
 # Route to handle Gemini queries
 @app.route('/ask-gemini', methods=['POST'])
-@limiter.limit("3 per minute")
+@limiter.limit("12 per minute")
 def ask_gemini():
     topic = request.json.get('topic', 'General Knowledge')
     difficulty = request.json.get('difficulty', 'medium')
@@ -83,10 +123,13 @@ def ask_gemini():
     batch_size = 10  # how many questions to fetch per call
     all_questions = []
     all_answers = []
+    max_attempts = 5
+    attempts = 0
 
-    while len(all_questions) < num_questions:
+    while attempts<max_attempts and len(all_questions) < num_questions:
         remaining = num_questions - len(all_questions)
         count = min(batch_size, remaining)
+        attempts += 1
 
         if question_type == 'true-false':
             user_query = f"""
@@ -116,32 +159,78 @@ def ask_gemini():
             {{
                 "question": "...",
                 "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
-                "answer": "B"
+                "answer": "B",
                 "explanation":"This is the explanation for the correct answer..."
             }}
             ]
             """
-
-        response = model.generate_content(user_query)
-        raw_text = response.text.strip()
-        clean_text = re.sub(r"```(?:json)?|```", "", raw_text).strip()
-
         try:
-            quiz_batch = json.loads(clean_text)
-        except json.JSONDecodeError:
-            print("JSON parsing failed, raw response was:", clean_text)
-            quiz_batch = []
+            response = model.generate_content(
+                user_query,
+                generation_config={"response_mime_type": "application/json"}
+            )
+            raw_text = response.text.strip()
+            clean_text = re.sub(r"```(?:json)?|```", "", raw_text).strip()
 
-        # sanitize
-        for q in quiz_batch:
-            opts = [opt.strip() for opt in q["options"]]
-            ans = q["answer"].strip().upper()[:1]  # A/B/C/D
-            all_questions.append({"question": q["question"], "options": opts, "explanation": q.get("explanation", "No explanation provided.")})
-            all_answers.append(ans)
+        
+            quiz_batch = json.loads(clean_text)
+
+            # Process each question defensively
+            for q in quiz_batch:
+                # 1. Ensure the item is a dictionary and contains all mandatory keys
+                if not isinstance(q, dict) or not all(k in q for k in ("question", "options", "answer")):
+                    print("Warning: Skipping malformed question object missing required fields:", q)
+                    continue
+                
+                # 2. Ensure 'options' is actually an iterable list
+                if not isinstance(q["options"], list):
+                    print("Warning: 'options' field is not a list. Skipping question:", q.get("question"))
+                    continue
+
+                try:
+                    # 3. Clean and extract fields safely
+                    opts = [str(opt).strip() for opt in q["options"]]
+                    ans = str(q["answer"]).strip().upper()[:1]
+                    explanation = q.get("explanation", "No explanation provided.")
+
+                    all_questions.append({
+                        "question": str(q["question"]),
+                        "options": opts,
+                        "explanation": str(explanation)
+                    })
+                    all_answers.append(ans)
+                except Exception as item_error:
+                    print(f"Warning: Failed to process individual question. Error: {item_error}")
+                    continue
+
+            # sanitize
+            # for q in quiz_batch:
+            #     opts = [opt.strip() for opt in q["options"]]
+            #     ans = q["answer"].strip().upper()[:1]  # A/B/C/D
+            #     all_questions.append({"question": q["question"], "options": opts, "explanation": q.get("explanation", "No explanation provided.")})
+            #     all_answers.append(ans)
+        except ResourceExhausted:
+            print("Rate limit hit, waiting...")
+            time.sleep(15)
+            continue
+        except json.JSONDecodeError:
+            print("Invalid JSON returned by AI. Skipping...")
+            continue
+        except Exception as e:
+            # This prevents internet drops or API hiccups from crashing your server!
+            print(f"Unexpected connection or API error: {e}")
+            continue
+
+        
 
     # keep only requested amount (in case model overshot)
     all_questions = all_questions[:num_questions]
     all_answers = all_answers[:num_questions]
+
+    if not all_questions:
+        return jsonify({
+            "error": "The AI quiz generator is temporarily busy or returned invalid formatting. Please try again in 15 seconds."
+        }), 502
 
     # save in session for grading later
     session["quiz"] = all_questions
@@ -150,8 +239,46 @@ def ask_gemini():
     session["difficulty"] = difficulty
     session["num_questions"] = num_questions
     
+    # --- NEW: SAVE TO DATABASE FOR SHARING ---
+    challenge_id = str(uuid.uuid4())
+    new_challenge = Challenge(
+        id=challenge_id,
+        topic=topic,
+        difficulty=difficulty,
+        quiz_data=json.dumps(all_questions),
+        answers_data=json.dumps(all_answers)
+    )
+    db.session.add(new_challenge)
+    db.session.commit()
 
-    return jsonify({"quiz": all_questions})
+    # Generate the full, live URL dynamically
+    challenge_link = url_for('load_challenge', challenge_id=challenge_id, _external=True)
+
+    return jsonify({
+        "quiz": all_questions, 
+        "challenge_id": challenge_id,
+        "challenge_link": challenge_link  # Send the full link to the frontend
+    })
+
+
+@app.route('/challenge/<challenge_id>')
+def load_challenge(challenge_id):
+    # Fetch the challenge from the DB, or return 404 if it doesn't exist
+    challenge = Challenge.query.get_or_404(challenge_id)
+    
+    # Load the JSON strings back into Python lists
+    quiz_questions = json.loads(challenge.quiz_data)
+    quiz_answers = json.loads(challenge.answers_data)
+    
+    # Populate this new user's session with the fetched data
+    session["quiz"] = quiz_questions
+    session["answers"] = quiz_answers
+    session["topic"] = challenge.topic
+    session["difficulty"] = challenge.difficulty
+    session["num_questions"] = len(quiz_questions)
+    
+    # Render the homepage, but pass a special flag: is_challenge=True
+    return render_template('index.html', lang=get_locale(), is_challenge=True, injected_quiz=quiz_questions)
 
 @app.route('/submit-quiz', methods=['POST'])
 def submit_quiz():
