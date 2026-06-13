@@ -41,9 +41,10 @@ except Exception as e:
     try:
         # Try a more generic widely available font that may include Devanagari
         pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, 'arialuni.ttf')) # Arial Unicode MS
-    except:
+    except Exception:
         # 3. Final fallback: Register 'Helvetica' but Hindi text will likely still fail (show squares)
-        pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, 'Helvetica'))
+        # pdfmetrics.registerFont(TTFont(HINDI_FONT_NAME, 'Helvetica'))
+        HINDI_FONT_NAME = 'Helvetica'
         print("Final Fallback: Using Helvetica. Hindi characters may not render correctly.")
 
 load_dotenv()

@@ -2,3 +2,6 @@
 my_requirements.txt
 flask_session/
 .venv/
+
+__pycache__/
+*.pyc
